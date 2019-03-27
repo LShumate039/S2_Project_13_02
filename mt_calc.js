@@ -34,7 +34,7 @@
 */
 
 window.onload = init;
-
+//Creating the init() function, which sets up the event handlers for the page. Within the init() function
 function init() {
       var calcButtons = document.getElementsByClassName("calcButton");
       for (var i = 0; i < calcButtons.length; i++) {
@@ -42,19 +42,51 @@ function init() {
       }
       document.getElementById("calcWindow").onkeydown = calcKeys;
 }
-
+//The purpose of this function is to change what appears in the calculator window when the user clicks the calculator buttons 
 function buttonClick(e) {
-      var calcValue = document.getElementById("calcWindow");
-      var calcDecimal = document.getElementById("decimals");
-      var buttonValue = e.tagrget.value;
+      var calcValue = document.getElementById("calcWindow").value;
+      var calcDecimal = document.getElementById("decimals").value;
+      var buttonValue = e.target.value;
       switch (buttonValue) {
             case "del":
-                  calcValue += "";
+                  calcValue = "";
                   break;
             case "bksp":
-                  calcValue += eraseChar(calcValue);
+                  calcValue = eraseChar(calcValue);
+                  break;
+            case "enter":
+                  calcValue += " = " + evalEq(calcValue, calcDecimal) + "\n";
+            case "prev":
+                  calcValue += lastEq(calcValue);
+                  break;
+            default:
+                  calcValue = calcValue + buttonValue;
+                  break;
       }
+      document.getElementById("calcWindow").value = calcValue;
+      document.getElementById("calcWindow").focus();
 }
+
+//this delects everything on the screen and as well as calulate the numbers together 
+function calcKeys(e) {
+      var calcValue = document.getElementById("calcWindow").value;
+      var calcDecimal = document.getElementById("decimals").value;
+      switch (e.key) {
+            case "Delete":
+                  calcValue = "";
+                  break;
+            case "Enter":
+                  calcValue += " = " + evalEq(calcValue, calcDecimal);
+                  break;
+            case "ArrowUp":
+                  calcValue = " = " + evalEq(calcValue);
+                  e.preventDefault();
+      }
+      document.getElementById("calcWindow").value = calcValue;
+}
+
+
+
 
 
 
